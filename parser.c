@@ -11,30 +11,30 @@
 
 
 /*======== void parse_file () ==========
-Inputs:   char * filename 
-          struct matrix * transform, 
+Inputs:   char * filename
+          struct matrix * transform,
           struct matrix * pm,
           screen s
-Returns: 
+Returns:
 
 Goes through the file named filename and performs all of the actions listed in that file.
 The file follows the following format:
      Every command is a single character that takes up a line
      Any command that requires arguments must have those arguments in the second line.
      The commands are as follows:
-         line: add a line to the edge matrix - 
+         line: add a line to the edge matrix -
 	    takes 6 arguemnts (x0, y0, z0, x1, y1, z1)
-	 ident: set the transform matrix to the identity matrix - 
-	 scale: create a scale matrix, 
-	    then multiply the transform matrix by the scale matrix - 
+	 ident: set the transform matrix to the identity matrix -
+	 scale: create a scale matrix,
+	    then multiply the transform matrix by the scale matrix -
 	    takes 3 arguments (sx, sy, sz)
-	 translate: create a translation matrix, 
-	    then multiply the transform matrix by the translation matrix - 
+	 translate: create a translation matrix,
+	    then multiply the transform matrix by the translation matrix -
 	    takes 3 arguments (tx, ty, tz)
 	 rotate: create an rotation matrix,
 	    then multiply the transform matrix by the rotation matrix -
 	    takes 2 arguments (axis, theta) axis should be x y or z
-	 apply: apply the current transformation matrix to the 
+	 apply: apply the current transformation matrix to the
 	    edge matrix
 	 display: draw the lines of the edge matrix to the screen
 	    display the screen
@@ -52,8 +52,8 @@ humans use degrees, so the file will contain degrees for rotations,
 be sure to conver those degrees to radians (M_PI is the constant
 for PI)
 ====================*/
-void parse_file ( char * filename, 
-                  struct matrix * transform, 
+void parse_file ( char * filename,
+                  struct matrix * transform,
                   struct matrix * edges,
                   screen s) {
 
@@ -61,14 +61,81 @@ void parse_file ( char * filename,
   char line[256];
   clear_screen(s);
 
-  if ( strcmp(filename, "stdin") == 0 ) 
+  if ( strcmp(filename, "stdin") == 0 )
     f = stdin;
   else
     f = fopen(filename, "r");
-  
+
+  char argcheck[256];
+  char argument1[10];
+  char argument2[10];
+  char argument3[10];
+  char argument4[10];
+  char argument5[10];
+  char argument6[10];
+
+
   while ( fgets(line, 255, f) != NULL ) {
+    //Place a terminating null
     line[strlen(line)-1]='\0';
+
+    //Run line command.
+    if (strcmp("line", argcheck) == 0) {
+        printf("Arguments - :%s:\n",line);
+        //PARSE NEXT LINE
+        //add_edge("ARGUMENTS RESULTING FROM PARSE")
+    }
+
+    //Run Ident command.
+    if (strcmp("ident", argcheck) == 0) {
+        //RUN IDENT
+    }
+
+    //Run Translation
+    if (strcmp("move", argcheck) == 0) {
+        printf("Arguments - :%s:\n",line);
+        //PARSE NEXT LINE
+        //Make Translation Matrix
+        //Multiply matrices
+    }
+
+    //Run Scaling
+    if (strcmp("scale", argcheck) == 0) {
+        printf("Arguments - :%s:\n",line);
+        //PARSE NEXT LINE
+        //Make Scaling Matrix
+        //Multiply Matrices
+    }
+
+    //Run rotation
+    if (strcmp("rotate", argcheck) == 0) {
+        printf("Arguments - :%s:\n",line);
+        //PARSE NEXT LINE
+        //Check 1st Argument for which rotation matrix.
+        //Make Rotation Matrix
+        //Multiply Matrices
+    }
+
+    //Run Matrix Application
+    if (strcmp("apply", argcheck) == 0) {
+        //RUN Application
+    }
+
+    //Run Display
+    if (strcmp("display", argcheck) == 0) {
+        //RUN DISPLAY
+    }
+
+    //Run Save
+    if (strcmp("save", argcheck) == 0) {
+        printf("Arguments - :%s:\n",line);
+        //PARSE NEXT LINE
+        //Save file with argument name
+    }
+
+    //Store next Line.
+    strcpy(argcheck, line);
+
     printf(":%s:\n",line);
   }
 }
-  
