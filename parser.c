@@ -60,55 +60,61 @@ void parse_file ( char * filename,
   FILE *f;
   char line[256];
   clear_screen(s);
+  color c;
+  c.red = 0;
+  c.green = 255;
+  c.blue = 255;
 
   if ( strcmp(filename, "stdin") == 0 )
     f = stdin;
   else
     f = fopen(filename, "r");
 
-  char argcheck[256];
-  char argument1[10];
-  char argument2[10];
-  char argument3[10];
-  char argument4[10];
-  char argument5[10];
-  char argument6[10];
+  double xvals[4];
+  double yvals[4];
+  double zvals[4];
+  struct matrix *temp;
 
 
-  while ( fgets(line, 255, f) != NULL ) {
+  while ( fgets(line, sizeof(line), f) != NULL ) {
     //Place a terminating null
     line[strlen(line)-1]='\0';
 
     //Run line command.
-    if (strcmp("line", argcheck) == 0) {
-        printf("Arguments - :%s:\n",line);
+    if (strncmp(line, "line", strlen(line)) == 0) {
+        fgets(line, sizeof(line), f);
+        sscanf(line, "%lf %lf %lf %lf %lf %lf",
+                      xvals, yvals, zvals, xvals + 1, yvals + 1, zvals + 1);
+        add_edge(edges, xvals[0], yvals[0], zvals[0], xvals[1], yvals[1], zvals[1]);
         //PARSE NEXT LINE
         //add_edge("ARGUMENTS RESULTING FROM PARSE")
     }
 
     //Run Ident command.
-    if (strcmp("ident", argcheck) == 0) {
-        //RUN IDENT
+    else if (strncmp(line, "ident", strlen(line)) == 0) {
+        ident(transform);
     }
 
     //Run Translation
-    if (strcmp("move", argcheck) == 0) {
-        printf("Arguments - :%s:\n",line);
-        //PARSE NEXT LINE
-        //Make Translation Matrix
-        //Multiply matrices
+    else if (strncmp(line, "move", strlen(line)) == 0) {
+        fgets(line, sizeof(line), f);
+        sscanf(line, "%lf %lf %lf",
+                      xvals, yvals, zvals);
+        temp = make_translate(xvals[0], yvals[0], zvals[0]);
+        matrix_mult(temp, transform);
     }
 
     //Run Scaling
-    if (strcmp("scale", argcheck) == 0) {
-        printf("Arguments - :%s:\n",line);
-        //PARSE NEXT LINE
-        //Make Scaling Matrix
-        //Multiply Matrices
+    else if (strncmp(line, "scale", strlen(line)) == 0) {
+        fgets(line, sizeof(line), f);
+        sscanf(line, "%lf %lf %lf",
+                      xvals, yvals, zvals);
+        temp = make_scale(xvals[0], yvals[0], zvals[0]);
+        matrix_mult(temp, transform);
     }
 
     //Run rotation
-    if (strcmp("rotate", argcheck) == 0) {
+    else if (strncmp(line, "rotate", strlen(line)) == 0) {
         printf("Arguments - :%s:\n",line);
         //PARSE NEXT LINE
         //Check 1st Argument for which rotation matrix.
@@ -117,25 +123,25 @@ void parse_file ( char * filename,
     }
 
     //Run Matrix Application
-    if (strcmp("apply", argcheck) == 0) {
-        //RUN Application
+    else if (strncmp(line, "apply", strlen(line)) == 0) {
+        matrix_mult(transform, edges);
     }
 
     //Run Display
-    if (strcmp("display", argcheck) == 0) {
-        //RUN DISPLAY
+    else if (strncmp(line, "display", strlen(line)) == 0) {
+        clear_screen;
+        draw_lines(edges, s, c);
+        display(s);
     }
 
     //Run Save
-    if (strcmp("save", argcheck) == 0) {
-        printf("Arguments - :%s:\n",line);
-        //PARSE NEXT LINE
-        //Save file with argument name
+    else if (strncmp(line, "save", strlen(line)) == 0) {
+        fgets(line, sizeof(line), f);
+        *strchr(line, '\n') = 0;
+        clear_screen(s);
+        draw_lines(edges, s, c);
+        save_extension(s, line);
     }
 
-    //Store next Line.
-    strcpy(argcheck, line);
-
-    printf(":%s:\n",line);
   }
 }
