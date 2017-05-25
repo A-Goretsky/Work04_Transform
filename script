@@ -1,31 +1,80 @@
 line
-0 0 0 100 0 0
+0 0 0 75 0 0
 line
-100 0 0 100 100 0
+75 0 0 75 50 0
 line
-100 100 0 0 100 0
+75 50 0 0 50 0
 line
-0 100 0 0 0 0
+0 50 0 0 0 0
 line
-0 0 100 100 0 100
+0 0 50 75 0 50
 line
-100 0 100 100 100 100
+75 0 50 75 50 50
 line
-100 100 100 0 100 100
+75 50 50 0 50 50
 line
-0 100 100 0 0 100
+0 50 50 0 0 50
 line
-0 0 0 0 0 100
+0 0 0 0 0 50
 line
-0 100 0 0 100 100
+0 50 0 0 50 50
 line
-100 100 0 100 100 100
+75 50 0 75 50 50
 line
-100 0 0 100 0 100
+75 0 0 75 0 50
 display
 ident
 scale
-2 2 2
+1.7 1.7 1.7
+apply
+display
+ident
+move
+100 100 0
+apply
+display
+ident
+rotate
+z 20
+rotate
+x 20
+rotate
+y 20
+apply
+display
+ident
+rotate
+y 20
+apply
+display
+line
+0 0 0 75 0 0
+line
+75 0 0 75 50 0
+line
+75 50 0 0 50 0
+line
+0 50 0 0 0 0
+line
+0 0 50 75 0 50
+line
+75 0 50 75 50 50
+line
+75 50 50 0 50 50
+line
+0 50 50 0 0 50
+line
+0 0 0 0 0 50
+line
+0 50 0 0 50 50
+line
+75 50 0 75 50 50
+line
+75 0 0 75 0 50
+display
+ident
+scale
+1.2 1.2 1.2
 apply
 display
 ident
