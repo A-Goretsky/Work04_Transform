@@ -74,7 +74,8 @@ void parse_file ( char * filename,
   double yvals[4];
   double zvals[4];
   struct matrix *temp;
-
+  char rotate_axis;
+  double rotate_deg;
 
   while ( fgets(line, sizeof(line), f) != NULL ) {
     //Place a terminating null
@@ -102,6 +103,7 @@ void parse_file ( char * filename,
                       xvals, yvals, zvals);
         temp = make_translate(xvals[0], yvals[0], zvals[0]);
         matrix_mult(temp, transform);
+        free_matrix(temp);
     }
 
     //Run Scaling
@@ -111,15 +113,30 @@ void parse_file ( char * filename,
                       xvals, yvals, zvals);
         temp = make_scale(xvals[0], yvals[0], zvals[0]);
         matrix_mult(temp, transform);
+        free_matrix(temp);
     }
 
     //Run rotation
     else if (strncmp(line, "rotate", strlen(line)) == 0) {
-        printf("Arguments - :%s:\n",line);
+        fgets(line, sizeof(line), f);
+        sscanf(line, "%c %lf",
+                      &rotate_axis, &rotate_deg);
+        //rotate_deg = (M_PI / 180) * rotate_deg;
+        if (rotate_axis == 'x') {
+            temp = make_rotX(rotate_deg);
+        }
+        else if (rotate_axis == 'y') {
+            temp = make_rotY(rotate_deg);
+        }
+        else if (rotate_axis == 'z') {
+            temp = make_rotZ(rotate_deg);
+        }
+        matrix_mult(temp, transform);
         //PARSE NEXT LINE
         //Check 1st Argument for which rotation matrix.
         //Make Rotation Matrix
         //Multiply Matrices
+        free_matrix(temp);
     }
 
     //Run Matrix Application
@@ -129,7 +146,7 @@ void parse_file ( char * filename,
 
     //Run Display
     else if (strncmp(line, "display", strlen(line)) == 0) {
-        clear_screen;
+        clear_screen(s);
         draw_lines(edges, s, c);
         display(s);
     }
